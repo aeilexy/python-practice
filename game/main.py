@@ -57,9 +57,11 @@ def game_title():
 
 
 def main():
-    x, y = 1,-4
-    game_title()
+    x, y = 0,0
     player_info = player.creater_player()
+
+    game_title()
+    
     while True:
         show_menu()
         choice = input("请输入你的选择: ")
@@ -67,9 +69,8 @@ def main():
 
 
         if choice == "1":
-            player.show_status(player_info["hp"], player_info["money"])
+            player.show_status(player_info["hp"], player_info["money"], player_info["time"])
             print(f"현재 위치: {map.get_place_name(x, y)}")
-            print_line()
             print_line()
             
 
@@ -77,10 +78,14 @@ def main():
         if  choice == "2":
             place_name = map.get_place_name(x, y)
             print(f"현재 위치: {place_name}")
+
             direction = input("이동할 방향을 입력하세요 (북, 남, 서, 동): ")
             x, y, moved = map.move_player(map.GAME_MAP, x, y, direction)
+
             player.decrease_hp(player_info, 1)
+
             place_name = map.get_place_name(x, y)
+
             print(f"이동한 후 위치: {place_name}")
             headle_place_event(player_info, place_name)
             print_line()
@@ -88,9 +93,9 @@ def main():
             if not moved:
                 print("그 방향으로 이동할 수 없습니다. 다시 시도하세요.")
                 print_line()
-            else:
-                print("이동에 성공했습니다!")
-                print_line()
+        
+            print("이동에 성공했습니다!")
+            print_line()
 
 
 
