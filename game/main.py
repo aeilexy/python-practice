@@ -1,6 +1,7 @@
 import map
 import player
 import inventory
+import save
 
 def headle_place_event(player_info, place_name):
     if place_name == "학생회관":
@@ -47,7 +48,8 @@ def show_menu():
     print("  1. 상태 보기")
     print("  2. 이동")
     print("  3. 가방 열기")
-    print("  4`. 게임 종료")
+    print("  4. 저장하기")
+    print("  5. 게임 종료")
     print("=" * 34)
 
 def game_title():
@@ -58,7 +60,6 @@ def game_title():
 
 
 def main():
-    x, y = 0,0
     player_info = player.creater_player()
 
     game_title()
@@ -71,22 +72,23 @@ def main():
 
         if choice == "1":
             player.show_status(player_info["hp"], player_info["money"], player_info["time"])
-            print(f"현재 위치: {map.get_place_name(x, y)}")
+            print(f"현재 위치: {map.get_place_name(player_info['x'], player_info['y'])}")
             print_line()
             
 
 
         if  choice == "2":
-            place_name = map.get_place_name(x, y)
+            place_name = map.get_place_name(player_info['x'], player_info['y'])
             print(f"현재 위치: {place_name}")
 
             direction = input("이동할 방향을 입력하세요 (북, 남, 서, 동): ")
-            x, y, moved = map.move_player(map.GAME_MAP, x, y, direction)
+            x, y, moved = map.move_player(map.GAME_MAP, player_info['x'], player_info['y'], direction)
+            if moved:
+                player_info['x'], player_info['y'] = x, y
 
             player.decrease_hp(player_info, 1)
 
-            place_name = map.get_place_name(x, y)
-
+            place_name = map.get_place_name(player_info['x'], player_info['y'])
             print(f"이동한 후 위치: {place_name}")
             headle_place_event(player_info, place_name)
             print_line()
@@ -102,8 +104,13 @@ def main():
             inventory.inventory_menu(player_info, inventory.inventory)
             print_line()
 
-
         elif choice == "4":
+            save.save_game(player_info)
+            print("게임이 저장되었습니다.")
+            print_line()
+
+
+        elif choice == "5":
             print("게임을 종료합니다.")
             break
 
