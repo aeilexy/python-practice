@@ -1,6 +1,6 @@
 import map
 import player
-
+import inventory
 
 def headle_place_event(player_info, place_name):
     if place_name == "학생회관":
@@ -46,7 +46,8 @@ def print_line():
 def show_menu():
     print("  1. 상태 보기")
     print("  2. 이동")
-    print("  3. 게임 종료")
+    print("  3. 가방 열기")
+    print("  4`. 게임 종료")
     print("=" * 34)
 
 def game_title():
@@ -97,9 +98,12 @@ def main():
             print("이동에 성공했습니다!")
             print_line()
 
-
-
         elif choice == "3":
+            inventory.inventory_menu(player_info, inventory.inventory)
+            print_line()
+
+
+        elif choice == "4":
             print("게임을 종료합니다.")
             break
 
